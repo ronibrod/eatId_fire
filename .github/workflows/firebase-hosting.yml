@@ -1,0 +1,43 @@
+name: Firebase Hosting CI/CD
+
+# Trigger on pushes to main and on pull requests to main
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build_and_deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1️⃣ Checkout the repository
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      # 2️⃣ Setup Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+
+      # 3️⃣ Install dependencies inside frontend/
+      - name: Install dependencies
+        working-directory: frontend
+        run: npm install
+
+      # 4️⃣ Build the Vite project
+      - name: Build Vite app
+        working-directory: frontend
+        run: npm run build
+
+      # 5️⃣ Deploy to Firebase Hosting
+      - name: Deploy to Firebase Hosting
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        with:          # GitHub token
+          firebaseServiceAccount: "${{ secrets.FIREBASE_SERVICE_ACCOUNT }}"  # Secret with Firebase SA JSON
+          projectId: "eat-id"                                    # Your Firebase project ID
+          channelId: "live"                                      # Hosting channel (default)
