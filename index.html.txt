@@ -1,0 +1,2333 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, minimum-scale=1.0, maximum-scale=5.0">
+    <title>EAT ID - בוא נכיר</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Complete reset for any element that might inherit text decoration */
+        div, span, p, a, em, i, strong, b, .blank-space, .question-text, .sub-question {
+            text-decoration: none !important;
+            text-decoration-line: none !important;
+            text-decoration-color: transparent !important;
+            text-decoration-style: none !important;
+            text-underline-offset: 0 !important;
+            text-decoration-skip: none !important;
+            text-decoration-skip-ink: none !important;
+            -webkit-text-decoration: none !important;
+            -webkit-text-decoration-line: none !important;
+            -webkit-text-decoration-color: transparent !important;
+            -webkit-text-decoration-style: none !important;
+            -moz-text-decoration: none !important;
+            -moz-text-decoration-line: none !important;
+            -moz-text-decoration-color: transparent !important;
+            -moz-text-decoration-style: none !important;
+        }
+
+        /* Ensure no unwanted borders appear anywhere */
+        span, .blank-space, .question-text, .question-text *, .sub-question, .sub-question * {
+            border-top: none !important;
+            border-left: none !important;
+            border-right: none !important;
+            text-decoration: none !important;
+            text-decoration-line: none !important;
+            text-decoration-color: transparent !important;
+            text-underline-offset: 0 !important;
+            -webkit-text-decoration: none !important;
+            -moz-text-decoration: none !important;
+            -webkit-text-decoration-line: none !important;
+            -webkit-text-decoration-color: transparent !important;
+            background-image: none !important;
+            box-shadow: none !important;
+        }
+
+        body {
+            font-family: 'Rubik', sans-serif;
+            background: #FEFAE0;
+            min-height: 100vh;
+            padding: 16px;
+            padding-bottom: 120px; /* מקום לכפתור התחתון + מרווח נוסף */
+            direction: rtl;
+            line-height: 1.6;
+        }
+
+        .container {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            max-width: 400px;
+            margin: 0 auto;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            overflow: visible;
+            min-height: auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .title {
+            font-size: clamp(18px, 5vw, 22px);
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 12px;
+            line-height: 1.3;
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: clamp(14px, 4vw, 16px);
+            line-height: 1.5;
+            margin-bottom: 8px;
+        }
+
+        .custom-input-container {
+            margin-top: 12px;
+            padding: 12px;
+            background: rgba(255, 229, 159, 0.1);
+            border-radius: 8px;
+            border: 2px solid #FFE59F;
+        }
+
+        .custom-input {
+            width: 100%;
+            padding: 8px 12px;
+            border: 2px solid #FFE59F;
+            border-radius: 6px;
+            font-family: 'Rubik', sans-serif;
+            font-size: clamp(14px, 3.8vw, 16px);
+            background: white;
+            margin-bottom: 8px;
+            direction: rtl;
+        }
+
+        .custom-input:focus {
+            outline: none;
+            border-color: #E3B719;
+            box-shadow: 0 0 0 3px rgba(227, 183, 25, 0.2);
+        }
+
+        .custom-input-buttons {
+            display: flex;
+            gap: 8px;
+            justify-content: flex-start;
+        }
+
+        .custom-add-btn, .custom-cancel-btn {
+            padding: 6px 12px;
+            border: none;
+            border-radius: 4px;
+            font-family: 'Rubik', sans-serif;
+            font-size: clamp(12px, 3.5vw, 14px);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .custom-add-btn {
+            background: #E3B719;
+            color: white;
+        }
+
+        .custom-add-btn:hover {
+            background: #d4a617;
+        }
+
+        .custom-cancel-btn {
+            background: #ccc;
+            color: #666;
+        }
+
+        .custom-cancel-btn:hover {
+            background: #bbb;
+        }
+
+        .custom-items-list {
+            margin-top: 8px;
+        }
+
+        .custom-item {
+            display: inline-block;
+            background: #E3B719;
+            color: white;
+            padding: 4px 8px;
+            margin: 2px;
+            border-radius: 4px;
+            font-size: clamp(12px, 3.5vw, 14px);
+            position: relative;
+        }
+
+        .custom-item .remove-btn {
+            margin-left: 6px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .custom-item .remove-btn:hover {
+            color: #ffcccc;
+        }
+
+        .question {
+            margin-bottom: 28px;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: slideIn 0.5s ease forwards;
+            cursor: pointer;
+            border-radius: 8px;
+            padding: 12px;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .question:hover {
+            background: rgba(255, 229, 159, 0.05);
+            border-color: rgba(227, 183, 25, 0.2);
+        }
+
+        .question.closed {
+            opacity: 0.8;
+            background: rgba(250, 243, 221, 0.3);
+        }
+
+        .question.closed:hover {
+            opacity: 1;
+            background: rgba(250, 243, 221, 0.5);
+        }
+
+        .question.active {
+            background: rgba(255, 229, 159, 0.1);
+            border-color: rgba(227, 183, 25, 0.3);
+            opacity: 1;
+            cursor: pointer;
+        }
+
+        .question.completed {
+            opacity: 1;
+            cursor: pointer;
+        }
+
+        @keyframes slideIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .question-text {
+            font-size: clamp(16px, 4.5vw, 18px);
+            color: #333;
+            margin-bottom: 16px;
+            font-weight: 500;
+            line-height: 1.8;
+            text-decoration: none !important;
+            text-decoration-line: none !important;
+            text-decoration-color: transparent !important;
+            text-underline-offset: 0 !important;
+            -webkit-text-decoration: none !important;
+            -moz-text-decoration: none !important;
+            min-height: auto;
+            overflow: visible;
+        }
+
+        .question-text * {
+            border: none !important;
+            outline: none !important;
+            text-decoration: none !important;
+            text-decoration-line: none !important;
+            text-decoration-color: transparent !important;
+            text-underline-offset: 0 !important;
+            -webkit-text-decoration: none !important;
+            -moz-text-decoration: none !important;
+        }
+
+        .blank-space {
+            display: inline;
+            min-width: auto;
+            text-align: right;
+            margin: 0;
+            transition: all 0.4s ease;
+            font-weight: 600;
+            font-size: clamp(14px, 4vw, 16px);
+            background: transparent !important;
+            position: relative;
+            border-bottom: 2px solid #FFE59F !important;
+            padding: 4px 8px 8px 8px;
+            outline: none !important;
+            box-shadow: none !important;
+            line-height: 1.6;
+            vertical-align: baseline;
+            text-decoration: none !important;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            max-width: 100%;
+        }
+
+        /* Remove any browser default styles that might add lines */
+        .blank-space::before,
+        .blank-space::after {
+            display: none !important;
+            content: none !important;
+        }
+
+        .blank-space.helper-mode::before,
+        .blank-space.helper-mode::after {
+            display: none !important;
+            content: none !important;
+        }
+
+        .blank-space.filled {
+            color: #E3B719;
+            font-style: italic;
+            font-weight: 600;
+            background: rgba(255, 229, 159, 0.1);
+            border-radius: 4px;
+            border-bottom: 2px solid #FFE59F !important;
+            display: inline;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            padding-left: 4px;
+        }
+
+        .blank-space.helper-mode {
+            color: #999 !important;
+            font-weight: 400 !important;
+            font-style: normal !important;
+            font-size: clamp(13px, 3.5vw, 15px) !important;
+            text-decoration: none !important;
+            text-decoration-line: none !important;
+            text-underline-offset: unset !important;
+            -webkit-text-decoration: none !important;
+            -moz-text-decoration: none !important;
+            text-shadow: none !important;
+            background: transparent !important;
+            background-image: none !important;
+            border-top: none !important;
+            border-left: none !important;
+            border-right: none !important;
+            outline: none !important;
+            box-shadow: none !important;
+        }
+
+        .question-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: all 0.4s ease;
+            opacity: 0;
+        }
+
+        .question.active .question-content {
+            max-height: none;
+            overflow: visible;
+            opacity: 1;
+            margin-top: 20px;
+        }
+
+        .question.completed .question-content {
+            max-height: 0;
+            overflow: hidden;
+            opacity: 0;
+        }
+
+        .options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            opacity: 1;
+            transition: opacity 0.3s ease;
+            justify-content: flex-start;
+            align-items: flex-start;
+        }
+
+        .options.hidden {
+            opacity: 0.3;
+            pointer-events: none;
+        }
+
+        .option {
+            background: #FFE59F;
+            color: #000000;
+            padding: clamp(8px, 2.5vw, 12px) clamp(12px, 4vw, 18px);
+            border-radius: 0;
+            border: none;
+            cursor: pointer;
+            font-size: clamp(13px, 3.8vw, 16px);
+            font-weight: 500;
+            transition: all 0.3s ease;
+            font-family: 'Rubik', sans-serif;
+            transform: scale(1);
+            word-wrap: break-word;
+            text-align: center;
+            line-height: 1.3;
+            min-height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex: 1 1 auto;
+            min-width: 80px;
+            max-width: 200px;
+        }
+
+        .option:hover {
+            background: #E3B719;
+            color: white;
+            transform: scale(1.03);
+        }
+
+        .option:focus {
+            outline: 3px solid #4A90E2;
+            outline-offset: 2px;
+        }
+
+        .option.selected {
+            background: #E3B719;
+            color: white;
+            transform: scale(1.02);
+            box-shadow: 0 4px 12px rgba(227, 183, 25, 0.3);
+        }
+
+        .sub-question {
+            margin-top: 20px;
+            padding: 0;
+            background: transparent;
+            border-radius: 0;
+            opacity: 0;
+            max-height: 0;
+            overflow: hidden;
+            transition: all 0.4s ease;
+            text-decoration: none !important;
+            text-decoration-line: none !important;
+        }
+
+        .sub-question.show {
+            opacity: 1;
+            max-height: none;
+            overflow: visible;
+            margin-top: 20px;
+            cursor: pointer;
+        }
+
+        .sub-question.collapsed {
+            opacity: 0.8;
+            cursor: pointer;
+            max-height: 50px;
+            overflow: hidden;
+        }
+
+        .sub-question.collapsed .question-text {
+            margin-bottom: 5px !important;
+            opacity: 1 !important;
+        }
+
+        .sub-question.collapsed .blank-space.helper-mode {
+            display: none !important;
+        }
+
+        .sub-question.collapsed .blank-space.filled {
+            display: inline !important;
+        }
+
+        .sub-question.collapsed .question-content {
+            max-height: 0 !important;
+            overflow: hidden !important;
+            opacity: 0 !important;
+            margin-top: 0 !important;
+            padding-top: 0 !important;
+            padding-bottom: 0 !important;
+            pointer-events: none !important;
+        }
+
+        .sub-question .question-content {
+            transition: all 0.4s ease;
+            overflow: visible;
+            max-height: none;
+            opacity: 1;
+        }
+
+        .sub-question.level2 {
+            border-left: 4px solid #E3B719;
+            padding-left: clamp(12px, 3vw, 16px);
+            margin-left: clamp(8px, 2vw, 12px);
+            background: rgba(255, 229, 159, 0.05);
+            border-radius: 0 8px 8px 0;
+            padding-top: 16px;
+            padding-bottom: 16px;
+            max-height: none;
+        }
+
+        .sub-question.level3 {
+            border-left: 4px solid #E3B719;
+            margin-right: 10px;
+            padding-left: 10px;
+            max-height: none;
+        }
+
+        .sub-question.level4 {
+            border-left: 4px solid #E3B719;
+            margin-right: 20px;
+            padding-left: 10px;
+            max-height: none;
+        }
+        
+        .sub-question.level4[id*="kosherCerts"] {
+            border-left: 4px solid #28a745;
+            background: rgba(40, 167, 69, 0.05);
+            max-height: none;
+        }
+
+        .sub-question.level3.collapsed .blank-space.helper-mode {
+            display: none !important;
+        }
+
+        .sub-question.level3.collapsed .blank-space.filled {
+            display: inline !important;
+        }
+
+        .sub-question.level3.collapsed .question-text {
+            margin-bottom: 5px !important;
+            opacity: 1 !important;
+        }
+
+        .sub-question.level3.collapsed .question-content {
+            max-height: 0 !important;
+            overflow: hidden !important;
+            opacity: 0 !important;
+            margin-top: 0 !important;
+            padding-top: 0 !important;
+            padding-bottom: 0 !important;
+            pointer-events: none !important;
+        }
+
+        .sub-question.level4.collapsed .blank-space.helper-mode {
+            display: none !important;
+        }
+
+        .sub-question.level4.collapsed .blank-space.filled {
+            display: inline !important;
+        }
+
+        .sub-question.level4.collapsed .question-text {
+            margin-bottom: 5px !important;
+            opacity: 1 !important;
+        }
+
+        .sub-question.level4.collapsed .question-content {
+            max-height: 0 !important;
+            overflow: hidden !important;
+            opacity: 0 !important;
+            margin-top: 0 !important;
+            padding-top: 0 !important;
+            padding-bottom: 0 !important;
+            pointer-events: none !important;
+        }
+
+        .sub-question .question-text {
+            font-size: clamp(15px, 4vw, 17px);
+            color: #444;
+            margin-bottom: 14px;
+            font-weight: 500;
+            line-height: 1.8;
+            min-height: auto;
+            overflow: visible;
+        }
+
+        .sub-question .option {
+            font-size: clamp(12px, 3.5vw, 15px);
+            padding: clamp(6px, 2vw, 10px) clamp(10px, 3vw, 16px);
+            min-height: 40px;
+            flex: 1 1 auto;
+            min-width: 70px;
+            max-width: 180px;
+        }
+
+        /* Remove any text decoration from sub-question elements */
+        .sub-question * {
+            text-decoration: none !important;
+            text-decoration-line: none !important;
+            text-decoration-color: transparent !important;
+            text-underline-offset: 0 !important;
+            -webkit-text-decoration: none !important;
+            -moz-text-decoration: none !important;
+        }
+
+        .bottom-button {
+            position: fixed;
+            bottom: 16px;
+            left: 16px;
+            right: 16px;
+            max-width: 400px;
+            margin: 0 auto;
+            background: #6c757d;
+            color: white;
+            border: none;
+            padding: clamp(12px, 3vw, 16px);
+            border-radius: 12px;
+            font-size: clamp(14px, 4vw, 16px);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Rubik', sans-serif;
+            transform: translateY(0);
+            min-height: 52px;
+            z-index: 1000;
+        }
+
+        .bottom-button.active {
+            background: #E3B719;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(227, 183, 25, 0.4);
+        }
+
+        .bottom-button:hover {
+            transform: translateY(-2px);
+        }
+
+        .bottom-button:focus {
+            outline: 3px solid #4A90E2;
+            outline-offset: 2px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 480px) {
+            body {
+                padding: 12px;
+                padding-bottom: 110px;
+            }
+            
+            .container {
+                padding: 20px;
+                margin: 0;
+                border-radius: 8px;
+            }
+            
+            .option {
+                padding: clamp(6px, 2vw, 10px) clamp(10px, 3vw, 14px);
+                font-size: clamp(12px, 3.5vw, 14px);
+                min-height: 40px;
+            }
+            
+            .sub-question.level2 {
+                padding-left: clamp(8px, 2vw, 12px);
+                margin-left: clamp(4px, 1vw, 8px);
+                padding-top: 12px;
+                padding-bottom: 12px;
+            }
+            
+            .sub-question.level3 {
+                margin-right: 8px;
+                padding-left: 8px;
+            }
+            
+            .sub-question.level4 {
+                margin-right: 15px;
+                padding-left: 8px;
+            }
+        }
+
+        @media (max-width: 360px) {
+            body {
+                padding: 8px;
+                padding-bottom: 100px;
+            }
+            
+            .container {
+                padding: 16px;
+                border-radius: 8px;
+            }
+            
+            .option {
+                font-size: clamp(11px, 3.2vw, 13px);
+                min-height: 36px;
+            }
+        }
+
+        @media (max-width: 320px) {
+            .option {
+                font-size: clamp(10px, 3vw, 12px);
+                padding: clamp(4px, 1.5vw, 8px) clamp(8px, 2.5vw, 12px);
+                min-height: 34px;
+            }
+        }
+
+        /* תמיכה בזום משופרת */
+        @media (min-width: 320px) and (max-width: 768px) {
+            html {
+                -webkit-text-size-adjust: 100%;
+                -ms-text-size-adjust: 100%;
+            }
+        }
+
+        /* נגישות לאנשים עם הפרעות תנועה */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+        /* ניגודיות גבוהה */
+        @media (prefers-contrast: high) {
+            .option {
+                border: 2px solid #333;
+            }
+            
+            .option.selected {
+                border: 3px solid #fff;
+            }
+        }
+
+        /* הדגשת פוקוס מקלדת */
+        .option:focus-visible {
+            outline: 3px solid #4A90E2;
+            outline-offset: 2px;
+        }
+
+        /* שיפור נגישות מקלדת */
+        button:focus:not(:focus-visible) {
+            outline: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="title">שמחים לארח אותך אצלנו</div>
+            <div class="subtitle">המלצר הוירטואלי יסמן את מה שבדיוק מתאים לך</div>
+            <div class="helper-text">💡 לחיצה על שאלה תפתח או תסגור אותה</div>
+        </div>
+
+        <!-- Question 1: בא לי לאכול -->
+        <div class="question active" style="animation-delay: 0.1s" id="question1" onclick="openQuestion(1)">
+            <div class="question-text">
+                בא לי לאכול היום <span class="blank-space helper-mode" id="answer1">בחר אופציה אחת או יותר</span>
+            </div>
+            <div class="question-content">
+                <div class="options" id="foodOptions">
+                    <button class="option" onclick="selectFoodOption('לא יודע', this, event)" tabindex="0" aria-label="לא יודע מה אני רוצה לאכול">לא יודע</button>
+                    <button class="option" onclick="selectFoodOption('בקטנה', this, event)" tabindex="0" aria-label="אני רוצה לאכול בקטנה">בקטנה</button>
+                    <button class="option" onclick="selectFoodOption('בריא', this, event)" tabindex="0" aria-label="אני רוצה לאכול בריא">בריא</button>
+                    <button class="option" onclick="selectFoodOption('משהו מיוחד', this, event)" tabindex="0" aria-label="אני רוצה משהו מיוחד">משהו מיוחד</button>
+                    <button class="option" onclick="selectFoodOption('מומלץ', this, event)" tabindex="0" aria-label="אני רוצה את המומלץ">מומלץ</button>
+                    <button class="option" onclick="selectFoodOption('משהו משביע', this, event)" tabindex="0" aria-label="אני רוצה משהו משביע">משהו משביע</button>
+                    <button class="option" onclick="selectFoodOption('מאכל מסוים', this, event)" tabindex="0" aria-label="אני רוצה מאכל מסוים">מאכל מסוים</button>
+                    <button class="option" onclick="selectFoodOption('אחר', this, event)" tabindex="0" aria-label="אחר - הוסף מאכל משלך">אחר</button>
+                </div>
+                <div id="foodSubQuestions"></div>
+            </div>
+        </div>
+
+        <!-- Question 2: הגבלות באוכל -->
+        <div class="question closed" style="animation-delay: 0.2s" id="question2" onclick="openQuestion(2)">
+            <div class="question-text">
+                יש לך הגבלות באוכל: <span class="blank-space helper-mode" id="answer2">בחר את כל האופציות הרלוונטיות</span>
+            </div>
+            <div class="question-content">
+                <div class="options" id="restrictionsOptions">
+                    <button class="option" onclick="selectRestriction('לא, אין לי הגבלות', this, event)" tabindex="0" aria-label="לא יש לי הגבלות באוכל">לא, אין לי הגבלות</button>
+                    <button class="option" onclick="selectRestriction('כן, יש דברים שהם לא בשבילי', this, event)" tabindex="0" aria-label="כן, יש דברים שהם לא בשבילי">כן, יש דברים שהם לא בשבילי</button>
+                    <button class="option" onclick="selectRestriction('כן, יש לי תזונה מסוימת', this, event)" tabindex="0" aria-label="כן, יש לי תזונה מסוימת">כן, יש לי תזונה מסוימת</button>
+                    <button class="option" onclick="selectRestriction('כן, יש לי אלרגיה או מזון שאסור לי לאכול', this, event)" tabindex="0" aria-label="כן, יש לי אלרגיה או מזון שאסור לי לאכול">כן, יש לי אלרגיה</button>
+                    <button class="option" onclick="selectRestriction('כן, מטעמי דת או אמונה', this, event)" tabindex="0" aria-label="כן, מטעמי דת או אמונה">כן, מטעמי דת או אמונה</button>
+                </div>
+                <div id="restrictionsSubQuestions"></div>
+            </div>
+        </div>
+
+        <!-- Question 3: חשוב לי גם -->
+        <div class="question closed" style="animation-delay: 0.3s" id="question3" onclick="openQuestion(3)">
+            <div class="question-text">
+                חשוב לי גם: <span class="blank-space helper-mode" id="answer3">בחר את כל האופציות הרלוונטיות</span>
+            </div>
+            <div class="question-content">
+                <div class="options" id="additionalOptions">
+                    <button class="option" onclick="selectAdditional('שלא ילכלך', this, event)" tabindex="0" aria-label="שלא ילכלך">שלא ילכלך</button>
+                    <button class="option" onclick="selectAdditional('שזה משהו שאפשר לחלוק', this, event)" tabindex="0" aria-label="שזה משהו שאפשר לחלוק">שזה משהו שאפשר לחלוק</button>
+                    <button class="option" onclick="selectAdditional('שיש משהו מתאים למישהו שאוכל איתי', this, event)" tabindex="0" aria-label="שיש משהו מתאים למישהו שאוכל איתי">שיש משהו מתאים למישהו שאוכל איתי</button>
+                    <button class="option" onclick="selectAdditional('משהו אחר', this, event)" tabindex="0" aria-label="משהו אחר">משהו אחר</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <button class="bottom-button" id="bottomBtn" onclick="skipToFullMenu()" tabindex="0" aria-label="לעבור לתפריט המלא">
+        לעבור לתפריט המלא
+    </button>
+
+    <script>
+        let currentQuestion = 1;
+        let selections = {
+            food: [],
+            restrictions: [],
+            additional: [],
+            foodSub: {},
+            restrictionsSub: {}
+        };
+
+        // Food sub-questions configuration with join types
+        const foodSubQuestions = {
+            'בקטנה': {
+                text: 'בקטנה זה אומר',
+                options: ['משקה חם', 'משקה קר', 'משקה אלכוהולי', 'נשנוש', 'קינוח', 'מנה קטנה או ראשונה'],
+                multiple: true,
+                joinType: 'or',
+                customPlaceholder: 'מה בא לך?'
+            },
+            'בריא': {
+                text: 'בריא מבחינתי זה',
+                options: ['סלטים', 'בלי שומן', 'בלי צבעי מאכל', 'עשיר בחלבון', 'דגנים מלאים', 'מרכיבים טריים', 'לא מטוגן'],
+                multiple: true,
+                joinType: 'and',
+                customPlaceholder: 'איזה מאפיין בריא?'
+            },
+            'משהו מיוחד': {
+                text: 'מיוחד הכוונה היא ל',
+                options: ['מטבח שונה', 'שילוב טעמים', 'דבר שלא מכיר', 'מנה יצירתית'],
+                multiple: true,
+                joinType: 'or',
+                customPlaceholder: 'איזה סוג של חוויה מיוחדת?'
+            },
+            'משהו משביע': {
+                text: 'ואני רוצה שזה יהיה',
+                options: ['עם בשר', 'עם פחמימות', 'מנה גדולה', 'שיחזיק אותי'],
+                multiple: true,
+                joinType: 'and',
+                customPlaceholder: 'מה ישביע אותך?'
+            },
+            'מאכל מסוים': {
+                text: 'מתחשק לי',
+                options: ['פסטה', 'פיצה', 'המבורגר', 'דגים', 'בשר', 'סלט', 'מרק', 'כריך', 'משהו אחר'],
+                multiple: false,
+                joinType: 'or',
+                customPlaceholder: 'איזה מאכל?'
+            }
+        };
+
+        // Restrictions sub-questions configuration
+        const restrictionsSubQuestions = {
+            'כן, יש דברים שהם לא בשבילי': {
+                text: 'מה לא בשבילך',
+                options: ['מרכיבים', 'מרקמים', 'סוגי מאכלים', 'מטבחים'],
+                multiple: true,
+                subCategories: {
+                    'מרכיבים': {
+                        text: 'איזה מרכיבים',
+                        options: ['כוסברה', 'טחינה', 'במיה', 'חצילים', 'בצל', 'גבינה', 'שום', 'משהו אחר'],
+                        customPlaceholder: 'איזה מרכיב?'
+                    },
+                    'מרקמים': {
+                        text: 'איזה מרקמים',
+                        options: ['רך', 'קשה', 'פריך', 'דביק'],
+                        customPlaceholder: 'איזה מרקם?'
+                    },
+                    'סוגי מאכלים': {
+                        text: 'איזה אוכל',
+                        options: ['לחמים', 'פסטות', 'קינוחים', 'משהו אחר'],
+                        customPlaceholder: 'איזה סוג אוכל?'
+                    },
+                    'מטבחים': {
+                        text: 'איזה מטבחים',
+                        options: ['אסייתי', 'מקסיקני', 'הודי', 'ערבי', 'אחר'],
+                        customPlaceholder: 'איזה מטבח?'
+                    }
+                }
+            },
+            'כן, יש לי תזונה מסוימת': {
+                text: 'מה התזונה שלך',
+                options: ['תזונת הריון', 'ללא גלוטן', 'טבעונית', 'דל בפחמימות', 'צמחונית', 'פלאו', 'קיטו, קטוגנית', 'ללא לקטוז', 'ללא סוכר', 'צמחונית בשילוב דגים'],
+                multiple: true
+            },
+            'כן, יש לי אלרגיה או מזון שאסור לי לאכול': {
+                text: 'מה אסור לך לאכול',
+                options: ['אגוזים', 'גלוטן', 'לקטוז', 'ביצים', 'דגים', 'פירות ים', 'אחר'],
+                multiple: true
+            },
+            'כן, מטעמי דת או אמונה': {
+                text: 'חשוב לי לשמור על',
+                options: ['כשרות', 'חלאל'],
+                multiple: false,
+                subCategories: {
+                    'כשרות': {
+                        text: 'מה רמת השמירה על כשרות שמתאימה לך',
+                        options: [
+                            'שומר כשרות בסיסית',
+                            'שומר כשרות קפדנית'
+                        ],
+                        multiple: false,
+                        subCategories: {
+                            'שומר כשרות בסיסית': {
+                                text: 'פרטי כשרות בסיסית',
+                                options: [
+                                    'מפריד בין בשר וחלב באותה ארוחה', 
+                                    'אוכל בשר עם חותמת כשרות (לא בודק גלאט)', 
+                                    'אוכל במסעדות חלביות/צמחוניות בלי תעודה',
+                                    'בחוץ מעדיף חלב/צמחוני במקום בשרי',
+                                    'אוכל אם המרכיבים כשרים (גם בלי תעודה)',
+                                    'לא אוכל חמץ בפסח',
+                                    'נמנע גם מקטניות בפסח',
+                                    'העדפה אחרת'
+                                ],
+                                multiple: true,
+                                subCategories: {
+                                    'שומר כשרות בסיסית_final': {
+                                        text: 'איזה תעודות כשרות אתה מקבל',
+                                        options: [
+                                            'סומך על כל התעודות הרשומות כאן',
+                                            'בינלאומיות: OU, OK, Star-K, Kof-K, KSA, Triangle-K',
+                                            'צפון אמריקה/אירופה: CRC, COR, KVH, KLBD, Kehilla Kosher, BCK, MK, EEK',
+                                            'ישראל: בד"ץ בית יוסף, בד"ץ העדה החרדית, רבנות מהדרין, צהר',
+                                            'אחר'
+                                        ],
+                                        multiple: true,
+                                        showForAll: true
+                                    }
+                                }
+                            },
+                            'שומר כשרות קפדנית': {
+                                text: 'פרטי כשרות קפדנית',
+                                options: [
+                                    'דורש בשר גלאט (חלק)', 
+                                    'דורש ירקות עליים בפיקוח',
+                                    'לא אוכל מוצרים בלי הכשר',
+                                    'נמנע גם מקטניות בפסח',
+                                    'מקפיד על חלב ישראל בלבד',
+                                    'דורש הכשר מיוחד ליין ואלכוהול',
+                                    'העדפה אחרת'
+                                ],
+                                multiple: true,
+                                subCategories: {
+                                    'שומר כשרות קפדנית_final': {
+                                        text: 'איזה תעודות כשרות אתה מקבל',
+                                        options: [
+                                            'סומך על כל התעודות הרשומות כאן',
+                                            'בינלאומיות: OU, OK, Star-K, Kof-K, KSA, Triangle-K',
+                                            'צפון אמריקה/אירופה: CRC, COR, KVH, KLBD, Kehilla Kosher, BCK, MK, EEK',
+                                            'ישראל: בד"ץ בית יוסף, בד"ץ העדה החרדית, רבנות מהדרין, צהר',
+                                            'אחר'
+                                        ],
+                                        multiple: true,
+                                        showForAll: true
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    'חלאל': {
+                        text: 'מהי רמת ההקפדה שלך על חלאל',
+                        options: ['אני נמנע מחזיר ואלכוהול', 'מקומות עם תעודת הקפדה על חלאל'],
+                        multiple: false
+                    }
+                }
+            }
+        };
+
+        // Helper function for text formatting with proper Hebrew grammar
+        function formatListText(items, joinType = 'and') {
+            if (items.length === 0) return '';
+            if (items.length === 1) return items[0];
+            
+            if (joinType === 'or') {
+                // For "or" type: item1, item2, או item3
+                if (items.length === 2) {
+                    return items.join(' או ');
+                } else {
+                    return items.slice(0, -1).join(', ') + ', או ' + items[items.length - 1];
+                }
+            } else {
+                // For "and" type: item1, item2, ו item3
+                if (items.length === 2) {
+                    return items.join(' ו');
+                } else {
+                    return items.slice(0, -1).join(', ') + ', ו' + items[items.length - 1];
+                }
+            }
+        }
+
+        function openQuestion(questionNum) {
+            // Toggle question state instead of always opening
+            const question = document.getElementById(`question${questionNum}`);
+            
+            if (question.classList.contains('active')) {
+                // If currently active, collapse it (only if it has selections)
+                const key = getSelectionKey(questionNum);
+                if (selections[key] && selections[key].length > 0) {
+                    question.classList.remove('active');
+                    question.classList.add('completed');
+                }
+            } else {
+                // Close all other questions first
+                for (let i = 1; i <= 3; i++) {
+                    if (i !== questionNum) {
+                        const otherQuestion = document.getElementById(`question${i}`);
+                        const otherKey = getSelectionKey(i);
+                        if (selections[otherKey] && selections[otherKey].length > 0) {
+                            otherQuestion.className = 'question completed';
+                        } else {
+                            otherQuestion.className = 'question closed';
+                        }
+                        otherQuestion.style.animationDelay = '0s';
+                    }
+                }
+                
+                // Open the clicked question
+                question.className = 'question active';
+                currentQuestion = questionNum;
+                
+                // Update helper text to show it's active
+                const answerElement = document.getElementById(`answer${questionNum}`);
+                if (selections[getSelectionKey(questionNum)].length === 0) {
+                    answerElement.classList.add('helper-mode');
+                    answerElement.classList.remove('filled');
+                    if (questionNum === 1) {
+                        answerElement.textContent = 'בחר אופציה אחת או יותר';
+                    } else if (questionNum === 3) {
+                        answerElement.textContent = 'בחר את כל האופציות הרלוונטיות';
+                    } else {
+                        answerElement.textContent = 'בחר את כל האופציות הרלוונטיות';
+                    }
+                }
+
+                // Auto-scroll to ensure content is visible
+                setTimeout(() => {
+                    ensureContentVisible(question);
+                }, 100);
+            }
+        }
+
+        function getSelectionKey(questionNum) {
+            const keys = ['', 'food', 'restrictions', 'additional'];
+            return keys[questionNum];
+        }
+
+        function showCustomInput(element, category, placeholder) {
+            // Check if input already exists
+            const existingContainer = element.parentElement.querySelector('.custom-input-container');
+            if (existingContainer) {
+                existingContainer.remove();
+            }
+            
+            // Create custom input container
+            const container = document.createElement('div');
+            container.className = 'custom-input-container';
+            
+            // Create input field
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.className = 'custom-input';
+            input.placeholder = placeholder;
+            input.maxLength = 50;
+            
+            // Create buttons container
+            const buttonsContainer = document.createElement('div');
+            buttonsContainer.className = 'custom-input-buttons';
+            
+            // Add button
+            const addBtn = document.createElement('button');
+            addBtn.className = 'custom-add-btn';
+            addBtn.textContent = 'הוסף';
+            addBtn.onclick = (e) => {
+                e.stopPropagation();
+                addCustomSelection(input.value.trim(), category, element, container);
+            };
+            
+            // Cancel button
+            const cancelBtn = document.createElement('button');
+            cancelBtn.className = 'custom-cancel-btn';
+            cancelBtn.textContent = 'ביטול';
+            cancelBtn.onclick = (e) => {
+                e.stopPropagation();
+                container.remove();
+            };
+            
+            // Custom items list (for multiple additions)
+            const itemsList = document.createElement('div');
+            itemsList.className = 'custom-items-list';
+            
+            // Assemble elements
+            buttonsContainer.appendChild(addBtn);
+            buttonsContainer.appendChild(cancelBtn);
+            container.appendChild(input);
+            container.appendChild(buttonsContainer);
+            container.appendChild(itemsList);
+            
+            // Add to DOM
+            element.parentElement.appendChild(container);
+            
+            // Focus input
+            input.focus();
+            
+            // Handle Enter key
+            input.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    addCustomSelection(input.value.trim(), category, element, container);
+                }
+            });
+        }
+        
+        function addCustomSelection(value, category, element, container) {
+            if (!value) return;
+            
+            // Handle certificates custom category specially
+            if (category === 'certificatesCustom') {
+                // Find the kosher certificates context
+                const certificatesDiv = element.closest('.sub-question[id*="kosherCerts"]');
+                if (certificatesDiv) {
+                    const parts = certificatesDiv.id.split('_');
+                    const restriction = parts[1];
+                    const parentValue = parts[2];
+                    const grandParentValue = parts[3];
+                    const categoryKey = `${restriction}_${parentValue}_${grandParentValue}_final`;
+                    
+                    if (!selections.restrictionsSub[categoryKey]) selections.restrictionsSub[categoryKey] = [];
+                    if (!selections.restrictionsSub[categoryKey].includes(value)) {
+                        selections.restrictionsSub[categoryKey].push(value);
+                        updateSubAnswer(categoryKey);
+                        updateAnswer(2);
+                        updateBottomButton();
+                    }
+                }
+                
+                // Clear input and focus
+                const input = container.querySelector('.custom-input');
+                input.value = '';
+                input.focus();
+                return;
+            }
+            
+            // Add to custom selections
+            if (!customSelections[category]) customSelections[category] = [];
+            if (!customSelections[category].includes(value)) {
+                customSelections[category].push(value);
+                
+                // Add to main selections
+                if (!selections[category].includes(value)) {
+                    selections[category].push(value);
+                }
+                
+                // Create visual item in the custom items list
+                const itemsList = container.querySelector('.custom-items-list');
+                const item = document.createElement('span');
+                item.className = 'custom-item';
+                item.innerHTML = `${value} <span class="remove-btn" onclick="removeCustomSelection('${value}', '${category}', this)">×</span>`;
+                itemsList.appendChild(item);
+                
+                // Clear input
+                const input = container.querySelector('.custom-input');
+                input.value = '';
+                input.focus();
+                
+                // Update display
+                updateAnswer(getQuestionNumber(category));
+                updateBottomButton();
+            }
+        }
+        
+        function removeCustomSelection(value, category, element) {
+            // Remove from custom selections
+            customSelections[category] = customSelections[category].filter(item => item !== value);
+            
+            // Remove from main selections
+            selections[category] = selections[category].filter(item => item !== value);
+            
+            // Remove visual element
+            element.parentElement.remove();
+            
+            // Update display
+            updateAnswer(getQuestionNumber(category));
+            updateBottomButton();
+        }
+        
+        function getQuestionNumber(category) {
+            const categoryMap = {
+                'food': 1,
+                'restrictions': 2,
+                'additional': 3
+            };
+            return categoryMap[category] || 1;
+        }
+
+        // Global object to store custom selections
+        let customSelections = {
+            food: [],
+            restrictions: [],
+            additional: [],
+            foodSub: {},
+            restrictionsSub: {}
+        };
+
+        function selectFoodOption(value, element, event) {
+            event.stopPropagation();
+            
+            // Handle "אחר" option
+            if (value === 'אחר') {
+                showCustomInput(element, 'food', 'מה מתחשק לך?');
+                return;
+            }
+            
+            // Handle "לא יודע" as exclusive option
+            if (value === 'לא יודע') {
+                element.parentElement.querySelectorAll('.option').forEach(opt => opt.classList.remove('selected'));
+                element.classList.add('selected');
+                selections.food = [value];
+                clearFoodSubQuestions();
+            } else {
+                // Remove "לא יודע" if selecting other options
+                const dontKnowButton = Array.from(element.parentElement.querySelectorAll('.option'))
+                    .find(btn => btn.textContent === 'לא יודע');
+                if (dontKnowButton) {
+                    dontKnowButton.classList.remove('selected');
+                    selections.food = selections.food.filter(item => item !== 'לא יודע');
+                }
+                
+                element.classList.toggle('selected');
+                
+                if (element.classList.contains('selected')) {
+                    if (!selections.food.includes(value)) {
+                        selections.food.push(value);
+                    }
+                } else {
+                    selections.food = selections.food.filter(item => item !== value);
+                    const categoryKey = `foodSub_${value}`;
+                    if (selections.foodSub[categoryKey]) {
+                        selections.foodSub[categoryKey] = [];
+                    }
+                    
+                    // Remove the sub-question immediately
+                    const subQuestionDiv = document.getElementById(`foodSub_${value}`);
+                    if (subQuestionDiv) {
+                        subQuestionDiv.remove();
+                    }
+                }
+                
+                showAllFoodSubQuestions();
+            }
+            
+            updateAnswer(1);
+            updateBottomButton();
+        }
+
+        function showAllFoodSubQuestions() {
+            clearFoodSubQuestions();
+            
+            const selectedWithSub = selections.food.filter(food => foodSubQuestions[food]);
+            
+            if (selectedWithSub.length > 0 && !selections.food.includes('לא יודע')) {
+                const container = document.getElementById('foodSubQuestions');
+                
+                selectedWithSub.forEach((food, index) => {
+                    const config = foodSubQuestions[food];
+                    
+                    const subQuestionDiv = document.createElement('div');
+                    subQuestionDiv.className = 'sub-question show level2';
+                    subQuestionDiv.id = `foodSub_${food}`;
+                    subQuestionDiv.onclick = (e) => {
+                        e.stopPropagation(); // מונע מהאירוע לבעבע למעלה
+                        // Only toggle if clicking on the question text, not the options
+                        if (e.target === subQuestionDiv || e.target.classList.contains('question-text') || e.target.classList.contains('blank-space')) {
+                            toggleSubQuestion(`foodSub_${food}`);
+                        }
+                    };
+                    
+                    const questionTextDiv = document.createElement('div');
+                    questionTextDiv.className = 'question-text';
+                    
+                    // Create the sub-question text with proper answer area
+                    const textBefore = config.text + ' ';
+                    const textSpan = document.createElement('span');
+                    textSpan.className = 'blank-space helper-mode';
+                    textSpan.textContent = 'בחר אופציות';
+                    textSpan.id = `subAnswer_foodSub_${food}`;
+                    
+                    questionTextDiv.textContent = textBefore;
+                    questionTextDiv.appendChild(textSpan);
+                    
+                    const questionContentDiv = document.createElement('div');
+                    questionContentDiv.className = 'question-content';
+                    
+                    const optionsDiv = document.createElement('div');
+                    optionsDiv.className = 'options';
+                    
+                    config.options.forEach(option => {
+                        const button = document.createElement('button');
+                        button.className = 'option';
+                        button.textContent = option;
+                        button.tabIndex = 0;
+                        button.setAttribute('aria-label', `בחר ${option} עבור ${food}`);
+                        button.onclick = (e) => {
+                            e.stopPropagation();
+                            if (option === 'משהו אחר') {
+                                const placeholder = config.customPlaceholder || 'הוסף אופציה';
+                                showCustomInput(button, 'foodSub', placeholder);
+                            } else {
+                                selectFoodSubOption(food, option, button, config.multiple);
+                            }
+                        };
+                        optionsDiv.appendChild(button);
+                    });
+                    
+                    questionContentDiv.appendChild(optionsDiv);
+                    subQuestionDiv.appendChild(questionTextDiv);
+                    subQuestionDiv.appendChild(questionContentDiv);
+                    
+                    container.appendChild(subQuestionDiv);
+                });
+            }
+        }
+
+        function selectFoodSubOption(foodType, value, element, isMultiple) {
+            element.classList.toggle('selected');
+            
+            const categoryKey = `foodSub_${foodType}`;
+            if (!selections.foodSub[categoryKey]) selections.foodSub[categoryKey] = [];
+            
+            if (element.classList.contains('selected')) {
+                if (isMultiple) {
+                    if (!selections.foodSub[categoryKey].includes(value)) {
+                        selections.foodSub[categoryKey].push(value);
+                    }
+                } else {
+                    element.parentElement.querySelectorAll('.option').forEach(opt => {
+                        if (opt !== element) opt.classList.remove('selected');
+                    });
+                    selections.foodSub[categoryKey] = [value];
+                }
+            } else {
+                selections.foodSub[categoryKey] = selections.foodSub[categoryKey].filter(item => item !== value);
+                
+                // If no selections left, remove the entire sub-question
+                if (selections.foodSub[categoryKey].length === 0) {
+                    const subQuestionDiv = document.getElementById(`foodSub_${foodType}`);
+                    if (subQuestionDiv) {
+                        subQuestionDiv.remove();
+                    }
+                    updateAnswer(1);
+                    updateBottomButton();
+                    return;
+                }
+            }
+            
+            // Update sub-question answer display
+            updateSubAnswer(`foodSub_${foodType}`);
+            updateAnswer(1);
+            updateBottomButton();
+        }
+
+        function clearFoodSubQuestions() {
+            const container = document.getElementById('foodSubQuestions');
+            if (container) {
+                container.innerHTML = '';
+            }
+            Object.keys(selections.foodSub).forEach(key => {
+                if (key.startsWith('foodSub_')) {
+                    selections.foodSub[key] = [];
+                }
+            });
+        }
+
+        function selectRestriction(value, element, event) {
+            event.stopPropagation();
+            
+            // Handle "לא, אין לי הגבלות" as exclusive option
+            if (value === 'לא, אין לי הגבלות') {
+                element.parentElement.querySelectorAll('.option').forEach(opt => opt.classList.remove('selected'));
+                element.classList.add('selected');
+                selections.restrictions = [value];
+                clearRestrictionsSubQuestions();
+            } else {
+                // Remove "לא, אין לי הגבלות" if selecting other options
+                const noRestrictionsButton = Array.from(element.parentElement.querySelectorAll('.option'))
+                    .find(btn => btn.textContent === 'לא, אין לי הגבלות');
+                if (noRestrictionsButton && noRestrictionsButton.classList.contains('selected')) {
+                    noRestrictionsButton.classList.remove('selected');
+                    selections.restrictions = selections.restrictions.filter(item => item !== 'לא, אין לי הגבלות');
+                }
+                
+                element.classList.toggle('selected');
+                
+                if (element.classList.contains('selected')) {
+                    if (!selections.restrictions.includes(value)) {
+                        selections.restrictions.push(value);
+                    }
+                } else {
+                    selections.restrictions = selections.restrictions.filter(item => item !== value);
+                    
+                    // Clear all sub-selections for this restriction
+                    Object.keys(selections.restrictionsSub).forEach(key => {
+                        if (key === value || key.startsWith(value + '_')) {
+                            selections.restrictionsSub[key] = [];
+                        }
+                    });
+                    
+                    // Remove the sub-question immediately
+                    const subQuestionDiv = document.getElementById(`restrictionSub_${value}`);
+                    if (subQuestionDiv) {
+                        subQuestionDiv.remove();
+                    }
+                }
+                
+                setTimeout(() => {
+                    showAllRestrictionsSubQuestions();
+                }, 100);
+            }
+            
+            updateAnswer(2);
+            updateBottomButton();
+        }
+
+        function showAllRestrictionsSubQuestions() {
+            clearRestrictionsSubQuestions();
+            
+            const container = document.getElementById('restrictionsSubQuestions');
+            
+            selections.restrictions.forEach((restriction, index) => {
+                if (restrictionsSubQuestions[restriction]) {
+                    showRestrictionSubQuestion(restriction, container, index);
+                }
+            });
+        }
+
+        function showRestrictionSubQuestion(restriction, container, index) {
+            const config = restrictionsSubQuestions[restriction];
+            
+            const subQuestionDiv = document.createElement('div');
+            subQuestionDiv.className = 'sub-question show level2';
+            subQuestionDiv.id = `restrictionSub_${restriction}`;
+            subQuestionDiv.onclick = (e) => {
+                e.stopPropagation(); // מונע מהאירוע לבעבע למעלה
+                // Only toggle if clicking on the question text, not the options
+                if (e.target === subQuestionDiv || e.target.classList.contains('question-text') || e.target.classList.contains('blank-space')) {
+                    toggleSubQuestion(`restrictionSub_${restriction}`);
+                }
+            };
+            
+            const questionTextDiv = document.createElement('div');
+            questionTextDiv.className = 'question-text';
+            
+            // Create the sub-question text with proper answer area
+            const textBefore = config.text + ' ';
+            const textSpan = document.createElement('span');
+            textSpan.className = 'blank-space helper-mode';
+            textSpan.textContent = 'בחר אופציות';
+            textSpan.id = `subAnswer_${restriction}`;
+            
+            questionTextDiv.textContent = textBefore;
+            questionTextDiv.appendChild(textSpan);
+            
+            const questionContentDiv = document.createElement('div');
+            questionContentDiv.className = 'question-content';
+            
+            const optionsDiv = document.createElement('div');
+            optionsDiv.className = 'options';
+            
+            config.options.forEach(option => {
+                const button = document.createElement('button');
+                button.className = 'option';
+                button.textContent = option;
+                button.tabIndex = 0;
+                button.setAttribute('aria-label', `בחר ${option} עבור ${restriction}`);
+                button.onclick = (e) => {
+                    e.stopPropagation();
+                    selectRestrictionSubOption(restriction, option, button, config.multiple, subQuestionDiv);
+                };
+                optionsDiv.appendChild(button);
+            });
+            
+            questionContentDiv.appendChild(optionsDiv);
+            
+            // Container for further sub-questions
+            const furtherSubDiv = document.createElement('div');
+            furtherSubDiv.id = `furtherSub_${restriction}`;
+            questionContentDiv.appendChild(furtherSubDiv);
+            
+            subQuestionDiv.appendChild(questionTextDiv);
+            subQuestionDiv.appendChild(questionContentDiv);
+            
+            container.appendChild(subQuestionDiv);
+        }
+
+        function selectRestrictionSubOption(restriction, value, element, isMultiple, parentDiv) {
+            element.classList.toggle('selected');
+            
+            const categoryKey = restriction;
+            if (!selections.restrictionsSub[categoryKey]) selections.restrictionsSub[categoryKey] = [];
+            
+            if (element.classList.contains('selected')) {
+                if (isMultiple) {
+                    if (!selections.restrictionsSub[categoryKey].includes(value)) {
+                        selections.restrictionsSub[categoryKey].push(value);
+                    }
+                } else {
+                    element.parentElement.querySelectorAll('.option').forEach(opt => {
+                        if (opt !== element) opt.classList.remove('selected');
+                    });
+                    selections.restrictionsSub[categoryKey] = [value];
+                }
+            } else {
+                selections.restrictionsSub[categoryKey] = selections.restrictionsSub[categoryKey].filter(item => item !== value);
+                
+                // Remove further sub-questions for this value
+                const furtherSubContainer = document.getElementById(`furtherSub_${restriction}`);
+                if (furtherSubContainer) {
+                    const valueSubQuestions = furtherSubContainer.querySelectorAll(`[data-parent-value="${value}"]`);
+                    valueSubQuestions.forEach(sq => sq.remove());
+                }
+                
+                // If no selections left, remove the entire sub-question
+                if (selections.restrictionsSub[categoryKey].length === 0) {
+                    const subQuestionDiv = document.getElementById(`restrictionSub_${restriction}`);
+                    if (subQuestionDiv) {
+                        subQuestionDiv.remove();
+                    }
+                    updateAnswer(2);
+                    updateBottomButton();
+                    return;
+                }
+            }
+            
+            // Update sub-question answer display
+            updateSubAnswer(restriction);
+            
+            // Show all relevant further sub-questions
+            setTimeout(() => {
+                showAllFurtherSubQuestions(restriction, parentDiv);
+            }, 100);
+            
+            updateAnswer(2);
+            updateBottomButton();
+        }
+
+        function showAllFurtherSubQuestions(restriction, parentDiv) {
+            const config = restrictionsSubQuestions[restriction];
+            if (!config.subCategories) return;
+            
+            const furtherSubContainer = document.getElementById(`furtherSub_${restriction}`);
+            if (!furtherSubContainer) return;
+            
+            // Clear existing sub-questions
+            furtherSubContainer.innerHTML = '';
+            
+            // Show sub-questions for all selected items that have sub-categories
+            const categoryKey = restriction;
+            if (selections.restrictionsSub[categoryKey] && selections.restrictionsSub[categoryKey].length > 0) {
+                selections.restrictionsSub[categoryKey].forEach((selectedValue, index) => {
+                    if (config.subCategories[selectedValue]) {
+                        setTimeout(() => {
+                            showFurtherSubQuestion(restriction, selectedValue, parentDiv, index);
+                        }, 50 * index);
+                    }
+                });
+            }
+        }
+
+        function toggleSubQuestion(subQuestionId) {
+            const subQuestion = document.getElementById(subQuestionId);
+            if (subQuestion) {
+                if (subQuestion.classList.contains('collapsed')) {
+                    // Expand
+                    subQuestion.classList.remove('collapsed');
+                    subQuestion.classList.add('show');
+                } else if (subQuestion.classList.contains('show')) {
+                    // Collapse - always allow collapsing
+                    subQuestion.classList.remove('show');
+                    subQuestion.classList.add('collapsed');
+                }
+            }
+        }
+
+        function showFurtherSubQuestion(restriction, parentValue, parentDiv, index = 0) {
+            console.log('=== showFurtherSubQuestion called ===');
+            console.log('restriction:', restriction);
+            console.log('parentValue:', parentValue);
+            
+            const config = restrictionsSubQuestions[restriction];
+            const subConfig = config.subCategories[parentValue];
+            
+            console.log('config:', config);
+            console.log('subConfig:', subConfig);
+            
+            if (!subConfig) {
+                console.log('❌ No subConfig found');
+                return;
+            }
+            
+            const furtherSubContainer = document.getElementById(`furtherSub_${restriction}`);
+            console.log('furtherSubContainer:', furtherSubContainer);
+            
+            const subQuestionDiv = document.createElement('div');
+            subQuestionDiv.className = 'sub-question show level3';
+            subQuestionDiv.setAttribute('data-parent-value', parentValue);
+            subQuestionDiv.style.marginTop = '15px';
+            subQuestionDiv.onclick = (e) => {
+                e.stopPropagation(); // מונע מהאירוע לבעבע למעלה
+                // Only toggle if clicking on the question text, not the options
+                if (e.target === subQuestionDiv || e.target.classList.contains('question-text') || e.target.classList.contains('blank-space')) {
+                    toggleSubQuestion(uniqueId);
+                }
+            };
+            
+            // Generate unique ID for this sub-question
+            const uniqueId = `furtherSub_${restriction}_${parentValue}_${index}`;
+            subQuestionDiv.id = uniqueId;
+            
+            const questionTextDiv = document.createElement('div');
+            questionTextDiv.className = 'question-text';
+            
+            // Create the sub-question text with proper answer area
+            const textBefore = subConfig.text + ' ';
+            const textSpan = document.createElement('span');
+            textSpan.className = 'blank-space helper-mode';
+            textSpan.textContent = 'בחר אופציות';
+            textSpan.id = `subAnswer_${restriction}_${parentValue}`;
+            
+            questionTextDiv.textContent = textBefore;
+            questionTextDiv.appendChild(textSpan);
+            
+            const questionContentDiv = document.createElement('div');
+            questionContentDiv.className = 'question-content';
+            
+            const optionsDiv = document.createElement('div');
+            optionsDiv.className = 'options';
+            
+            console.log('Creating options for:', subConfig.options);
+            
+            subConfig.options.forEach(option => {
+                console.log('Creating button for option:', option);
+                const button = document.createElement('button');
+                button.className = 'option';
+                button.textContent = option;
+                button.tabIndex = 0;
+                button.setAttribute('aria-label', `בחר ${option} עבור ${parentValue}`);
+                button.onclick = (e) => {
+                    e.stopPropagation();
+                    console.log('🔘 Button clicked:', option, 'for parentValue:', parentValue);
+                    if (option === 'משהו אחר' || option === 'אחר') {
+                        const placeholder = subConfig.customPlaceholder || 'הוסף אופציה';
+                        showCustomInput(button, 'restrictionsSub', placeholder);
+                    } else {
+                        selectFurtherSubOption(restriction, parentValue, option, button, subConfig.multiple !== false, subQuestionDiv);
+                    }
+                };
+                optionsDiv.appendChild(button);
+            });
+            
+            questionContentDiv.appendChild(optionsDiv);
+            
+            // Container for even further sub-questions
+            const evenFurtherSubDiv = document.createElement('div');
+            evenFurtherSubDiv.id = `evenFurtherSub_${restriction}_${parentValue}`;
+            console.log('Created evenFurtherSub container with ID:', `evenFurtherSub_${restriction}_${parentValue}`);
+            questionContentDiv.appendChild(evenFurtherSubDiv);
+            
+            subQuestionDiv.appendChild(questionTextDiv);
+            subQuestionDiv.appendChild(questionContentDiv);
+            
+            furtherSubContainer.appendChild(subQuestionDiv);
+            
+            console.log('✅ Further sub-question added successfully');
+        }
+
+        function selectFurtherSubOption(restriction, parentValue, value, element, isMultiple, parentDiv) {
+            element.classList.toggle('selected');
+            
+            const categoryKey = `${restriction}_${parentValue}`;
+            if (!selections.restrictionsSub[categoryKey]) selections.restrictionsSub[categoryKey] = [];
+            
+            if (element.classList.contains('selected')) {
+                if (isMultiple) {
+                    if (!selections.restrictionsSub[categoryKey].includes(value)) {
+                        selections.restrictionsSub[categoryKey].push(value);
+                    }
+                } else {
+                    element.parentElement.querySelectorAll('.option').forEach(opt => {
+                        if (opt !== element) opt.classList.remove('selected');
+                    });
+                    selections.restrictionsSub[categoryKey] = [value];
+                    
+                    // Clear existing even further sub-questions when making single selection
+                    const evenFurtherSubContainer = document.getElementById(`evenFurtherSub_${restriction}_${parentValue}`);
+                    if (evenFurtherSubContainer) {
+                        evenFurtherSubContainer.innerHTML = '';
+                    }
+                }
+                
+                // Check for even further sub-questions - simplified check
+                const config = restrictionsSubQuestions[restriction];
+                console.log('=== DEBUG: Checking deeper sub-questions ===');
+                console.log('restriction:', restriction);
+                console.log('parentValue:', parentValue);
+                console.log('value:', value);
+                console.log('config:', config);
+                
+                if (config && config.subCategories) {
+                    console.log('config.subCategories:', config.subCategories);
+                    console.log('config.subCategories[parentValue]:', config.subCategories[parentValue]);
+                    
+                    if (config.subCategories[parentValue]) {
+                        console.log('config.subCategories[parentValue].subCategories:', config.subCategories[parentValue].subCategories);
+                        
+                        if (config.subCategories[parentValue].subCategories) {
+                            console.log('config.subCategories[parentValue].subCategories[value]:', config.subCategories[parentValue].subCategories[value]);
+                            
+                            if (config.subCategories[parentValue].subCategories[value]) {
+                                console.log('✅ Found deeper sub-question config! Calling showEvenFurtherSubQuestion...');
+                                setTimeout(() => {
+                                    showEvenFurtherSubQuestion(restriction, parentValue, value, parentDiv);
+                                    
+                                    // Special case: if this is kosher, also show certificates question
+                                    if (restriction === 'כן, מטעמי דת או אמונה' && parentValue === 'כשרות' && 
+                                        (value === 'שומר כשרות בסיסית' || value === 'שומר כשרות קפדנית')) {
+                                        setTimeout(() => {
+                                            showKosherCertificatesQuestion(restriction, parentValue, value, parentDiv);
+                                        }, 600);
+                                    }
+                                }, 300);
+                            } else {
+                                console.log('❌ No sub-question config found for value:', value);
+                            }
+                        } else {
+                            console.log('❌ No subCategories found for parentValue:', parentValue);
+                        }
+                    } else {
+                        console.log('❌ No config found for parentValue:', parentValue);
+                    }
+                } else {
+                    console.log('❌ No config or subCategories found');
+                }
+                console.log('=== END DEBUG ===');
+                
+            } else {
+                selections.restrictionsSub[categoryKey] = selections.restrictionsSub[categoryKey].filter(item => item !== value);
+                
+                // Remove even further sub-questions for this value
+                const evenFurtherSubContainer = document.getElementById(`evenFurtherSub_${restriction}_${parentValue}`);
+                if (evenFurtherSubContainer) {
+                    const valueSubQuestions = evenFurtherSubContainer.querySelectorAll(`[data-grandparent-value="${value}"]`);
+                    valueSubQuestions.forEach(sq => sq.remove());
+                }
+                
+                // If no selections left, remove the entire sub-question
+                if (selections.restrictionsSub[categoryKey].length === 0) {
+                    const subQuestionDiv = parentDiv;
+                    if (subQuestionDiv) {
+                        subQuestionDiv.remove();
+                    }
+                    updateAnswer(2);
+                    updateBottomButton();
+                    return;
+                }
+            }
+            
+            // Update sub-question answer display
+            updateSubAnswer(`${restriction}_${parentValue}`);
+            updateAnswer(2);
+            updateBottomButton();
+        }
+
+        function showEvenFurtherSubQuestion(restriction, parentValue, grandParentValue, parentDiv) {
+            console.log('=== showEvenFurtherSubQuestion called ===');
+            console.log('restriction:', restriction, 'parentValue:', parentValue, 'grandParentValue:', grandParentValue);
+            
+            const config = restrictionsSubQuestions[restriction];
+            if (!config || !config.subCategories || !config.subCategories[parentValue] || !config.subCategories[parentValue].subCategories) {
+                console.log('❌ Missing config structure');
+                return;
+            }
+            
+            const subConfig = config.subCategories[parentValue].subCategories[grandParentValue];
+            console.log('subConfig found:', subConfig);
+            
+            if (!subConfig) {
+                console.log('❌ No subConfig found for:', grandParentValue);
+                return;
+            }
+            
+            const evenFurtherSubContainer = document.getElementById(`evenFurtherSub_${restriction}_${parentValue}`);
+            console.log('Looking for container with ID:', `evenFurtherSub_${restriction}_${parentValue}`);
+            console.log('evenFurtherSubContainer found:', evenFurtherSubContainer);
+            
+            if (!evenFurtherSubContainer) {
+                console.log('❌ No evenFurtherSubContainer found - trying to find it in DOM');
+                // Let's try to find it differently
+                const allContainers = document.querySelectorAll('[id*="evenFurtherSub"]');
+                console.log('All evenFurtherSub containers in DOM:', allContainers);
+                
+                // Create the container if it doesn't exist
+                const parentSubQuestion = document.querySelector(`[data-parent-value="${parentValue}"]`);
+                console.log('Parent sub-question found:', parentSubQuestion);
+                
+                if (parentSubQuestion) {
+                    const newContainer = document.createElement('div');
+                    newContainer.id = `evenFurtherSub_${restriction}_${parentValue}`;
+                    console.log('Creating new container with ID:', newContainer.id);
+                    
+                    // Find the question-content div within this sub-question
+                    const questionContent = parentSubQuestion.querySelector('.question-content');
+                    if (questionContent) {
+                        questionContent.appendChild(newContainer);
+                        console.log('✅ Container created and added to question-content');
+                    } else {
+                        console.log('❌ No question-content found in parent sub-question');
+                        return;
+                    }
+                    
+                    // Now use the new container
+                    createEvenFurtherSubQuestion(newContainer, restriction, parentValue, grandParentValue, subConfig);
+                } else {
+                    console.log('❌ Parent sub-question not found');
+                    return;
+                }
+            } else {
+                createEvenFurtherSubQuestion(evenFurtherSubContainer, restriction, parentValue, grandParentValue, subConfig);
+            }
+        }
+
+        function createEvenFurtherSubQuestion(container, restriction, parentValue, grandParentValue, subConfig) {
+            console.log('Creating even further sub-question in container:', container);
+            
+            const subQuestionDiv = document.createElement('div');
+            subQuestionDiv.className = 'sub-question show level4';
+            subQuestionDiv.setAttribute('data-grandparent-value', grandParentValue);
+            subQuestionDiv.style.marginTop = '15px';
+            
+            // Generate unique ID for this sub-question
+            const uniqueId = `level4_${restriction}_${parentValue}_${grandParentValue}_${Date.now()}`;
+            subQuestionDiv.id = uniqueId;
+            
+            subQuestionDiv.onclick = (e) => {
+                e.stopPropagation();
+                if (e.target === subQuestionDiv || e.target.classList.contains('question-text') || e.target.classList.contains('blank-space')) {
+                    toggleSubQuestion(uniqueId);
+                }
+            };
+            
+            const questionTextDiv = document.createElement('div');
+            questionTextDiv.className = 'question-text';
+            
+            const textBefore = subConfig.text + ' ';
+            const textSpan = document.createElement('span');
+            textSpan.className = 'blank-space helper-mode';
+            textSpan.textContent = 'בחר אופציות';
+            textSpan.id = `subAnswer_${restriction}_${parentValue}_${grandParentValue}`;
+            
+            questionTextDiv.textContent = textBefore;
+            questionTextDiv.appendChild(textSpan);
+            
+            const questionContentDiv = document.createElement('div');
+            questionContentDiv.className = 'question-content';
+            
+            const optionsDiv = document.createElement('div');
+            optionsDiv.className = 'options';
+            
+            console.log('Creating options for level 4:', subConfig.options);
+            
+            subConfig.options.forEach(option => {
+                const button = document.createElement('button');
+                button.className = 'option';
+                button.textContent = option;
+                button.tabIndex = 0;
+                button.setAttribute('aria-label', `בחר ${option} עבור ${grandParentValue}`);
+                button.onclick = (e) => {
+                    e.stopPropagation();
+                    console.log('🔘 Level 4 button clicked:', option);
+                    selectEvenFurtherSubOption(restriction, parentValue, grandParentValue, option, button, subConfig.multiple !== false);
+                };
+                optionsDiv.appendChild(button);
+            });
+            
+            questionContentDiv.appendChild(optionsDiv);
+            subQuestionDiv.appendChild(questionTextDiv);
+            subQuestionDiv.appendChild(questionContentDiv);
+            
+            container.appendChild(subQuestionDiv);
+            
+            // Auto-scroll to ensure the new content is visible
+            setTimeout(() => {
+                ensureContentVisible(subQuestionDiv);
+            }, 100);
+            
+            console.log('✅ Even further sub-question created successfully');
+        }
+
+        function selectEvenFurtherSubOption(restriction, parentValue, grandParentValue, value, element, isMultiple) {
+            element.classList.toggle('selected');
+            
+            const categoryKey = `${restriction}_${parentValue}_${grandParentValue}`;
+            if (!selections.restrictionsSub[categoryKey]) selections.restrictionsSub[categoryKey] = [];
+            
+            if (element.classList.contains('selected')) {
+                if (isMultiple) {
+                    if (!selections.restrictionsSub[categoryKey].includes(value)) {
+                        selections.restrictionsSub[categoryKey].push(value);
+                    }
+                } else {
+                    element.parentElement.querySelectorAll('.option').forEach(opt => {
+                        if (opt !== element) opt.classList.remove('selected');
+                    });
+                    selections.restrictionsSub[categoryKey] = [value];
+                }
+                
+                // Check if this should trigger certificates question
+                if (restriction === 'כן, מטעמי דת או אמונה' && parentValue === 'כשרות' && 
+                    (grandParentValue === 'שומר כשרות בסיסית' || grandParentValue === 'שומר כשרות קפדנית')) {
+                    setTimeout(() => {
+                        showKosherCertificatesQuestion(restriction, parentValue, grandParentValue, parentDiv);
+                    }, 300);
+                }
+                
+            } else {
+                selections.restrictionsSub[categoryKey] = selections.restrictionsSub[categoryKey].filter(item => item !== value);
+                
+                // If no selections left, remove the entire sub-question and certificates
+                if (selections.restrictionsSub[categoryKey].length === 0) {
+                    const uniqueId = `evenFurtherSub_${restriction}_${parentValue}_${grandParentValue}`;
+                    const subQuestionDiv = document.getElementById(uniqueId);
+                    if (subQuestionDiv) {
+                        subQuestionDiv.remove();
+                    }
+                    
+                    // Remove certificates question too
+                    const certificatesKey = `${restriction}_${parentValue}_${grandParentValue}_final`;
+                    if (selections.restrictionsSub[certificatesKey]) {
+                        selections.restrictionsSub[certificatesKey] = [];
+                    }
+                    const certificatesDiv = document.getElementById(`kosherCerts_${restriction}_${parentValue}_${grandParentValue}`);
+                    if (certificatesDiv) {
+                        certificatesDiv.remove();
+                    }
+                    
+                    updateAnswer(2);
+                    updateBottomButton();
+                    return;
+                }
+            }
+            
+            // Update sub-question answer display
+            updateSubAnswer(`${restriction}_${parentValue}_${grandParentValue}`);
+            updateAnswer(2);
+            updateBottomButton();
+        }
+
+        function showKosherCertificatesQuestion(restriction, parentValue, grandParentValue, parentDiv) {
+            // Check if certificates question already exists
+            const existingCerts = document.getElementById(`kosherCerts_${restriction}_${parentValue}_${grandParentValue}`);
+            if (existingCerts) return;
+            
+            const config = restrictionsSubQuestions[restriction];
+            if (!config || !config.subCategories || !config.subCategories[parentValue] || 
+                !config.subCategories[parentValue].subCategories ||
+                !config.subCategories[parentValue].subCategories[grandParentValue] ||
+                !config.subCategories[parentValue].subCategories[grandParentValue].subCategories) {
+                return;
+            }
+            
+            const certsConfig = config.subCategories[parentValue].subCategories[grandParentValue].subCategories[`${grandParentValue}_final`];
+            if (!certsConfig) return;
+            
+            // Find the container for this certificates question
+            const evenFurtherSubContainer = document.getElementById(`evenFurtherSub_${restriction}_${parentValue}`);
+            if (!evenFurtherSubContainer) return;
+            
+            const certificatesDiv = document.createElement('div');
+            certificatesDiv.className = 'sub-question show level4';
+            certificatesDiv.id = `kosherCerts_${restriction}_${parentValue}_${grandParentValue}`;
+            certificatesDiv.style.marginTop = '15px';
+            certificatesDiv.style.borderColor = '#28a745';
+            
+            certificatesDiv.onclick = (e) => {
+                e.stopPropagation();
+                if (e.target === certificatesDiv || e.target.classList.contains('question-text') || e.target.classList.contains('blank-space')) {
+                    toggleSubQuestion(`kosherCerts_${restriction}_${parentValue}_${grandParentValue}`);
+                }
+            };
+            
+            const questionTextDiv = document.createElement('div');
+            questionTextDiv.className = 'question-text';
+            
+            const textBefore = certsConfig.text + ' ';
+            const textSpan = document.createElement('span');
+            textSpan.className = 'blank-space helper-mode';
+            textSpan.textContent = 'בחר תעודות';
+            textSpan.id = `subAnswer_${restriction}_${parentValue}_${grandParentValue}_final`;
+            
+            questionTextDiv.textContent = textBefore;
+            questionTextDiv.appendChild(textSpan);
+            
+            const questionContentDiv = document.createElement('div');
+            questionContentDiv.className = 'question-content';
+            
+            const optionsDiv = document.createElement('div');
+            optionsDiv.className = 'options';
+            
+            certsConfig.options.forEach(option => {
+                const button = document.createElement('button');
+                button.className = 'option';
+                button.textContent = option;
+                button.tabIndex = 0;
+                
+                if (option === 'אחר') {
+                    button.onclick = (e) => {
+                        e.stopPropagation();
+                        showCustomInput(button, 'certificatesCustom', 'הוסף תעודת כשרות');
+                    };
+                } else {
+                    button.onclick = (e) => {
+                        e.stopPropagation();
+                        selectKosherCertificate(restriction, parentValue, grandParentValue, option, button);
+                    };
+                }
+                optionsDiv.appendChild(button);
+            });
+            
+            questionContentDiv.appendChild(optionsDiv);
+            certificatesDiv.appendChild(questionTextDiv);
+            certificatesDiv.appendChild(questionContentDiv);
+            
+            evenFurtherSubContainer.appendChild(certificatesDiv);
+            
+            // Auto-scroll to ensure the certificates question is visible
+            setTimeout(() => {
+                ensureContentVisible(certificatesDiv);
+            }, 100);
+        }
+
+        function selectKosherCertificate(restriction, parentValue, grandParentValue, value, element) {
+            element.classList.toggle('selected');
+            
+            const categoryKey = `${restriction}_${parentValue}_${grandParentValue}_final`;
+            if (!selections.restrictionsSub[categoryKey]) selections.restrictionsSub[categoryKey] = [];
+            
+            // Handle "סמן הכל" logic
+            if (value === 'סומך על כל התעודות הרשומות כאן') {
+                if (element.classList.contains('selected')) {
+                    // Select all other options
+                    element.parentElement.querySelectorAll('.option').forEach(opt => {
+                        if (opt !== element && opt.textContent !== 'אחר') {
+                            opt.classList.add('selected');
+                            const optValue = opt.textContent;
+                            if (!selections.restrictionsSub[categoryKey].includes(optValue)) {
+                                selections.restrictionsSub[categoryKey].push(optValue);
+                            }
+                        }
+                    });
+                } else {
+                    // Deselect all options
+                    element.parentElement.querySelectorAll('.option').forEach(opt => {
+                        opt.classList.remove('selected');
+                    });
+                    selections.restrictionsSub[categoryKey] = [];
+                }
+            } else {
+                // Regular option logic
+                if (element.classList.contains('selected')) {
+                    if (!selections.restrictionsSub[categoryKey].includes(value)) {
+                        selections.restrictionsSub[categoryKey].push(value);
+                    }
+                } else {
+                    selections.restrictionsSub[categoryKey] = selections.restrictionsSub[categoryKey].filter(item => item !== value);
+                    
+                    // Also deselect "select all" if it was selected
+                    const selectAllButton = Array.from(element.parentElement.querySelectorAll('.option'))
+                        .find(btn => btn.textContent === 'סומך על כל התעודות הרשומות כאן');
+                    if (selectAllButton) {
+                        selectAllButton.classList.remove('selected');
+                        selections.restrictionsSub[categoryKey] = selections.restrictionsSub[categoryKey]
+                            .filter(item => item !== 'סומך על כל התעודות הרשומות כאן');
+                    }
+                }
+            }
+            
+            // Update sub-question answer display
+            updateSubAnswer(categoryKey);
+            updateAnswer(2);
+            updateBottomButton();
+        }
+
+        function clearRestrictionsSubQuestions() {
+            const container = document.getElementById('restrictionsSubQuestions');
+            if (container) {
+                container.innerHTML = '';
+            }
+        }
+
+        function selectAdditional(value, element, event) {
+            event.stopPropagation();
+            
+            // Handle "אחר" option
+            if (value === 'משהו אחר') {
+                showCustomInput(element, 'additional', 'מה חשוב לך?');
+                return;
+            }
+            
+            element.classList.toggle('selected');
+            
+            if (element.classList.contains('selected')) {
+                if (!selections.additional.includes(value)) {
+                    selections.additional.push(value);
+                }
+            } else {
+                selections.additional = selections.additional.filter(item => item !== value);
+            }
+            
+            updateAnswer(3);
+            updateBottomButton();
+        }
+
+        function updateSubAnswer(categoryKey) {
+            const subAnswerElement = document.getElementById(`subAnswer_${categoryKey}`);
+            if (subAnswerElement) {
+                const relevantKey = categoryKey.startsWith('foodSub_') ? categoryKey : categoryKey;
+                let selectionData;
+                
+                if (categoryKey.startsWith('foodSub_')) {
+                    selectionData = selections.foodSub[categoryKey];
+                } else {
+                    selectionData = selections.restrictionsSub[categoryKey];
+                }
+                
+                if (selectionData && selectionData.length > 0) {
+                    subAnswerElement.classList.remove('helper-mode');
+                    subAnswerElement.classList.add('filled');
+                    
+                    // Determine join type for food sub-questions
+                    let joinType = 'and';
+                    if (categoryKey.startsWith('foodSub_')) {
+                        const foodType = categoryKey.replace('foodSub_', '');
+                        const config = foodSubQuestions[foodType];
+                        if (config && config.joinType) {
+                            joinType = config.joinType;
+                        }
+                    }
+                    
+                    const text = formatListText(selectionData, joinType);
+                    subAnswerElement.style.whiteSpace = 'normal';
+                    subAnswerElement.textContent = text;
+                } else {
+                    subAnswerElement.classList.add('helper-mode');
+                    subAnswerElement.classList.remove('filled');
+                    subAnswerElement.style.whiteSpace = 'normal';
+                    
+                    // Get appropriate helper text
+                    let helperText = 'בחר אופציות';
+                    if (categoryKey.endsWith('_final')) {
+                        helperText = 'בחר תעודות';
+                    }
+                    
+                    subAnswerElement.textContent = helperText;
+                }
+            }
+        }
+
+        function updateAnswer(questionNum) {
+            const answerElement = document.getElementById(`answer${questionNum}`);
+            let key = getSelectionKey(questionNum);
+            let selectedItems = selections[key];
+            
+            if (selectedItems.length > 0) {
+                answerElement.classList.remove('helper-mode');
+                answerElement.classList.add('filled');
+                
+                if (questionNum === 1) {
+                    // For food - show each main selection with its sub-selections
+                    const parts = [];
+                    selectedItems.forEach(item => {
+                        let text = item;
+                        const subKey = `foodSub_${item}`;
+                        if (selections.foodSub[subKey] && selections.foodSub[subKey].length > 0) {
+                            const config = foodSubQuestions[item];
+                            const joinType = config ? config.joinType : 'and';
+                            const subText = formatListText(selections.foodSub[subKey], joinType);
+                            text += ': ' + subText;
+                        }
+                        parts.push(text);
+                    });
+                    
+                    // Use proper Hebrew formatting for main selections
+                    const fullText = formatListText(parts, 'and');
+                    answerElement.style.whiteSpace = 'normal';
+                    answerElement.textContent = fullText;
+                } else if (questionNum === 2) {
+                    // For restrictions - show each main selection with its sub-selections
+                    const parts = [];
+                    selectedItems.forEach(item => {
+                        let text = item;
+                        
+                        // Check for direct sub-selections
+                        if (selections.restrictionsSub[item] && selections.restrictionsSub[item].length > 0) {
+                            text += ': ' + formatListText(selections.restrictionsSub[item], 'and');
+                        }
+                        
+                        // Check for nested sub-selections
+                        Object.keys(selections.restrictionsSub).forEach(subKey => {
+                            if (subKey.startsWith(item + '_') && selections.restrictionsSub[subKey].length > 0) {
+                                text += ' (' + formatListText(selections.restrictionsSub[subKey], 'and') + ')';
+                            }
+                        });
+                        
+                        parts.push(text);
+                    });
+                    
+                    const fullText = formatListText(parts, 'and');
+                    answerElement.style.whiteSpace = 'normal';
+                    answerElement.textContent = fullText;
+                } else {
+                    // For additional preferences - simple list
+                    const fullText = formatListText(selectedItems, 'and');
+                    answerElement.style.whiteSpace = 'normal';
+                    answerElement.textContent = fullText;
+                }
+            } else {
+                answerElement.classList.add('helper-mode');
+                answerElement.classList.remove('filled');
+                answerElement.style.whiteSpace = 'normal';
+                // Reset to helper text based on question
+                if (questionNum === 1) {
+                    answerElement.textContent = 'בחר אופציה אחת או יותר';
+                } else if (questionNum === 3) {
+                    answerElement.textContent = 'בחר את כל האופציות הרלוונטיות';
+                } else {
+                    answerElement.textContent = 'בחר את כל האופציות הרלוונטיות';
+                }
+            }
+        }
+
+        function updateBottomButton() {
+            const btn = document.getElementById('bottomBtn');
+            const hasSelections = 
+                (Array.isArray(selections.food) && selections.food.length > 0) ||
+                (Array.isArray(selections.restrictions) && selections.restrictions.length > 0) ||
+                (Array.isArray(selections.additional) && selections.additional.length > 0);
+            
+            if (hasSelections) {
+                btn.textContent = 'סיימתי - תראה לי את התפריט המותאם';
+                btn.className = 'bottom-button active';
+                btn.setAttribute('aria-label', 'סיימתי עם הבחירות, תראה לי את התפריט המותאם');
+                btn.onclick = showResults;
+            } else {
+                btn.textContent = 'לעבור לתפריט המלא';
+                btn.className = 'bottom-button';
+                btn.setAttribute('aria-label', 'לעבור לתפריט המלא');
+                btn.onclick = skipToFullMenu;
+            }
+        }
+
+        function showResults() {
+            console.log('🎉 הבחירות הסופיות של המשתמש:', selections);
+            
+            // Build a comprehensive results summary
+            let resultsText = 'מעבר לתפריט המותאם אישית! 🍽️\n\nהבחירות שלך:\n\n';
+            
+            // Food preferences
+            if (selections.food && selections.food.length > 0) {
+                resultsText += '🍽️ אוכל: ' + formatListText(selections.food, 'and');
+                
+                // Add food sub-preferences
+                selections.food.forEach(food => {
+                    const subKey = `foodSub_${food}`;
+                    if (selections.foodSub[subKey] && selections.foodSub[subKey].length > 0) {
+                        const config = foodSubQuestions[food];
+                        const joinType = config ? config.joinType : 'and';
+                        resultsText += '\n   • ' + food + ': ' + formatListText(selections.foodSub[subKey], joinType);
+                    }
+                });
+                resultsText += '\n\n';
+            }
+            
+            // Restrictions
+            if (selections.restrictions && selections.restrictions.length > 0) {
+                resultsText += '🚫 הגבלות: ' + formatListText(selections.restrictions, 'and');
+                
+                // Add restriction details
+                selections.restrictions.forEach(restriction => {
+                    if (selections.restrictionsSub[restriction] && selections.restrictionsSub[restriction].length > 0) {
+                        resultsText += '\n   • ' + restriction + ': ' + formatListText(selections.restrictionsSub[restriction], 'and');
+                    }
+                    
+                    // Check for deeper restrictions
+                    Object.keys(selections.restrictionsSub).forEach(subKey => {
+                        if (subKey.startsWith(restriction + '_') && selections.restrictionsSub[subKey].length > 0) {
+                            const keyParts = subKey.split('_');
+                            if (keyParts.length >= 3) {
+                                resultsText += '\n     ◦ ' + keyParts.slice(-1)[0] + ': ' + formatListText(selections.restrictionsSub[subKey], 'and');
+                            }
+                        }
+                    });
+                });
+                resultsText += '\n\n';
+            }
+            
+            // Additional preferences
+            if (selections.additional && selections.additional.length > 0) {
+                resultsText += '✨ חשוב גם: ' + formatListText(selections.additional, 'and');
+            }
+            
+            alert(resultsText);
+        }
+
+        function skipToFullMenu() {
+            alert('מעבר לתפריט המלא...');
+        }
+
+        // Keyboard accessibility
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' || e.key === ' ') {
+                if (e.target.classList.contains('option')) {
+                    e.target.click();
+                    e.preventDefault();
+                }
+            }
+        });
+
+        // Auto-scroll to ensure content is visible
+        function ensureContentVisible(element) {
+            if (element) {
+                const rect = element.getBoundingClientRect();
+                const buttonHeight = 100; // מקום לכפתור התחתון
+                
+                if (rect.bottom > window.innerHeight - buttonHeight || rect.top < 0) {
+                    element.scrollIntoView({ 
+                        behavior: 'smooth', 
+                        block: 'center',
+                        inline: 'nearest'
+                    });
+                }
+            }
+        }
+
+        // Listen for sub-question changes
+        const observer = new MutationObserver(function(mutations) {
+            mutations.forEach(function(mutation) {
+                if (mutation.type === 'childList') {
+                    const target = mutation.target;
+                    if (target.id === 'foodSubQuestions' || target.id === 'restrictionsSubQuestions') {
+                        setTimeout(() => {
+                            const subQuestions = target.querySelectorAll('.sub-question.show');
+                            if (subQuestions.length > 0) {
+                                const lastSubQuestion = subQuestions[subQuestions.length - 1];
+                                ensureContentVisible(lastSubQuestion);
+                            }
+                        }, 200);
+                    }
+                }
+            });
+        });
+
+        observer.observe(document.getElementById('foodSubQuestions'), {
+            childList: true,
+            subtree: true
+        });
+
+        observer.observe(document.getElementById('restrictionsSubQuestions'), {
+            childList: true,
+            subtree: true
+        });
+    </script>
+</body>
+</html>
