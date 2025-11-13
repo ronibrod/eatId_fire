@@ -91,7 +91,7 @@ export const foodOptions = [
   { value: 'בקטנה', label: 'בקטנה' },
   { value: 'בריא', label: 'בריא' },
   { value: 'משהו מיוחד', label: 'משהו מיוחד' },
-  { value: 'מומלץ', label: 'מומלץ' },
+  { value: 'המלצת השף', label: 'המלצת השף' },
   { value: 'משהו משביע', label: 'משהו משביע' },
   { value: 'מאכל מסוים', label: 'מאכל מסוים' },
   { value: 'אחר', label: 'אחר' }
